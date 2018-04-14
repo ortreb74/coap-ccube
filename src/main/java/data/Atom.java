@@ -1,39 +1,54 @@
 package data;
 
 /**
- * Created by drncl on 28/01/2018.
+ * Created by drncl on 13/04/2018.
  */
 public class Atom {
 
-    // l'ordre
-    int order;
+    int id;
+    int idColor;
 
-    // la Composition
-    int[] colors;
+    static String[] color = {"red","yellow","orange","white","blue","green"};
 
-    // les coordonnées ?
-    // ou les faces ?
-
-    //  Variadic function
-    // https://stackoverflow.com/questions/3960236/what-does-the-mean-in-a-parameter-list-doinbackgroundstring-params
-    public Atom(int...colors) {
-        this.colors = colors;
+    public Atom(int i) {
+        id = i;
+        idColor = i / 2;
     }
 
-    public int getOrder() {
-        return colors.length;
+    @Override
+    public String toString() {
+        return String.valueOf(id);
     }
 
-    public void display() {
-        String result;
-        result = "(";
+    public String dump() {
+        return "(" + String.valueOf(id) + "," + String.valueOf(idColor) + ")";
+    }
 
-        for (int index = 0 ; index < getOrder() ; index++) {
-            if (index != 0) result += ", ";
-            result += colors[index];
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Atom atom = (Atom) o;
+
+        if (id != atom.id) return false;
+        return idColor == atom.idColor;
+    }
+
+    public boolean equivalent(Atom other) {
+        return other.idColor == idColor;
+    }
+
+    public static Integer getColorIndex(char color) {
+        switch (color) {
+            case 'r' : return 0;
+            case 'y' : return 1;
+            case 'o' : return 2;
+            case 'w' : return 3;
         }
-        result += ")";
-        System.out.println(result);
+
+        return 10;
     }
+
+
 }
