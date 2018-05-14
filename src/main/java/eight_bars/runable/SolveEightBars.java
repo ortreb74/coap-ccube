@@ -1,6 +1,7 @@
-package runable;
+package eight_bars.runable;
 
-import data.EightBars;
+import eight_bars.IdentityGoal;
+import eight_bars.data.EightBars;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -9,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class SolveEightBars {
 
-    public static int max = 10;
+    public static int max = 100000;
 
     public static void main(String[] args) {
         EightBars eightBars = new EightBars('o','y','w','w','o','y','r','r');
@@ -25,7 +26,12 @@ public class SolveEightBars {
 
         String combination = "";
 
-        while (!(eightBars.equivalent(identity))) {
+        // eightBars.equals(identity)
+        // eightBars.equivalent(identity)
+
+        IdentityGoal goals = new IdentityGoal();
+
+        while (!(goals.Goal(eightBars))) {
             // https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
             String transformationId = String.valueOf(ThreadLocalRandom.current().nextInt(0, 2 + 1));
             combination += transformationId;

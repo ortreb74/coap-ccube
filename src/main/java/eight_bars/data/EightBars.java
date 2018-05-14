@@ -1,8 +1,8 @@
-package data;
+package eight_bars.data;
 
-import java.util.HashMap;
+import data.Atom;
+
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,7 +21,7 @@ public class EightBars {
 
     // donc je veux faire une copie qui ne soit pas simplement un mirroir.
 
-    Atom [] atoms = new Atom[8];
+    Atom[] atoms = new Atom[8];
 
     // le buffer permet de sauvegarder un atome
     Atom buffer;
@@ -77,16 +77,40 @@ public class EightBars {
         return true;
     }
 
+    public boolean deepEquivalent(EightBars other) {
+        // je copie other ?
+
+        for (int face = 0 ; face < 4 ; face++) {
+            if (startsLikeOther(other)) return faceCompare(other, 1) && faceCompare(other, 2) && faceCompare(other, 3);
+
+            other.tAllRotate();
+        }
+
+        return false;
+    }
+
+    public boolean startsLikeOther(EightBars other) {
+        return  faceCompare(other, 0);
+    }
+
+    public boolean faceCompare(EightBars other, int faceNumber) {
+        int n1 = faceNumber * 2;
+        int n2 = faceNumber * 2 + 1;
+
+        return  atoms[n1].equivalent(other.atoms[n1]) && atoms[n2].equivalent(other.atoms[n2]) ||
+                atoms[n1].equivalent(other.atoms[n2]) && atoms[n2].equivalent(other.atoms[n1]);
+    }
+
     public void transformation(String transformationId) {
         String log = transformationId + " : " + toWord();
         switch (transformationId) {
-            case "0" : tHalfRorate(); break;
-            case "1" : tHalfTranslation(); break;
-            case "2" : tTranslation(); break;
+            case "0" : tHalfRotate(); break;
+            case "1" : tDownTranslation(); break;
+            case "2" : tUpTranslation(); break;
         }
 
-        log += " ==> " + toWord();
-        System.out.println(log);
+        /* log += " ==> " + toWord();
+        System.out.println(log); */
     }
 
     private void save(int x, int y) {
@@ -101,7 +125,7 @@ public class EightBars {
         atoms[x*2+y] = buffer;
     }
 
-    public void tHalfRorate() {
+    public void tHalfRotate() {
 
         save(0,0);
         move(0,0,0,1); // [0,0] <-- [0,1]
@@ -109,7 +133,7 @@ public class EightBars {
 
     }
 
-    public void tHalfTranslation() {
+    public EightBars tDownTranslation() {
 
         save(0,0);
 
@@ -117,13 +141,14 @@ public class EightBars {
         move(1,0,2,0); // [1,0] <-- [2,0]
         move(2,0,3,0); // [2,0] <-- [3,0]
 
-
         getback(3,0);
+
+        return this;
     }
 
 
-    public void tTranslation() {
-        tHalfTranslation();
+    public void tUpTranslation() {
+        tDownTranslation();
 
         save(0,1);
 

@@ -1,6 +1,6 @@
 package runable;
 
-import data.EightBars;
+import eight_bars.data.EightBars;
 
 /**
  * Created by drncl on 13/04/2018.
